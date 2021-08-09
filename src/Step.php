@@ -12,6 +12,7 @@ use SilverStripe\SiteConfig\SiteConfig;
 /**
  * @property string Title
  * @property int Sort
+ * @property int WorkflowID
  * @method SiteConfig Workflow
  * @method SiteTree[]|HasManyList Pages
  * @method BaseElement[]|HasManyList Elements

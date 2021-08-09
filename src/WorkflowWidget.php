@@ -3,8 +3,10 @@
 namespace SilverStripe\Workflow;
 
 use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\Core\Extensible;
 use SilverStripe\Forms\FormField;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\View\ArrayData;
 
 class WorkflowWidget extends FormField
 {
@@ -26,6 +28,14 @@ class WorkflowWidget extends FormField
         parent::__construct('WorkflowWidget', 'Workflow');
         $this->item = $item;
         $this->addExtraClass('workflow-widget');
+    }
+
+    /**
+     * @return DataObject|StepRelationExtension
+     */
+    public function getItem(): DataObject
+    {
+        return $this->item;
     }
 
     public function getProps(): array
@@ -54,7 +64,7 @@ class WorkflowWidget extends FormField
             ? $selectedStep->StepID
             : 0;
 
-        return [
+        $props = ArrayData::create([
             'recordId' => $item->ID,
             'recordType' => $item instanceof SiteTree
                 ? WorkflowController::RECORD_TYPE_PAGE
@@ -62,7 +72,13 @@ class WorkflowWidget extends FormField
             'steps' => $steps,
             'selectedStepId' => $selectedStepId,
             'route' => WorkflowController::ROUTE,
-        ];
+        ]);
+
+        $this->extend('updateProps', $props);
+
+        $props = $props->toMap();
+
+        return $props;
     }
 
     public function getSchemaStateDefaults(): array

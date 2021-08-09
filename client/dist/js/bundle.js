@@ -156,38 +156,15 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _Injector = __webpack_require__(0);
 
+var _helper = __webpack_require__("./client/src/helper.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var sendSelectedStep = function sendSelectedStep(_ref) {
-    var route = _ref.route,
-        stepId = _ref.stepId,
-        recordId = _ref.recordId,
-        recordType = _ref.recordType;
-
-    fetch(route, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            stepId: stepId,
-            recordId: recordId,
-            recordType: recordType
-        })
-    }).then(function (res) {
-        return res.json();
-    }).then(function (data) {
-        if (data.error) {
-            alert(data.error);
-        }
-    });
-};
-
-var WorkflowStep = function WorkflowStep(_ref2) {
-    var id = _ref2.id,
-        title = _ref2.title,
-        onClick = _ref2.onClick,
-        selectedId = _ref2.selectedId;
+var WorkflowStep = function WorkflowStep(_ref) {
+    var id = _ref.id,
+        title = _ref.title,
+        onClick = _ref.onClick,
+        selectedId = _ref.selectedId;
     return _react2.default.createElement(
         "button",
         { type: "button", className: "workflow__state", onClick: onClick },
@@ -196,10 +173,10 @@ var WorkflowStep = function WorkflowStep(_ref2) {
     );
 };
 
-var WorkflowOptions = function WorkflowOptions(_ref3) {
-    var steps = _ref3.steps,
-        selectedId = _ref3.selectedId,
-        createOnClick = _ref3.createOnClick;
+var WorkflowOptions = function WorkflowOptions(_ref2) {
+    var steps = _ref2.steps,
+        selectedId = _ref2.selectedId,
+        createOnClick = _ref2.createOnClick;
 
     var renderedSteps = steps.map(function (s) {
         return _react2.default.createElement(WorkflowStep, _extends({
@@ -217,13 +194,13 @@ var WorkflowOptions = function WorkflowOptions(_ref3) {
     );
 };
 
-var WorkflowButton = function WorkflowButton(_ref4) {
-    var recordId = _ref4.recordId,
-        recordType = _ref4.recordType,
-        selectedStepId = _ref4.selectedStepId,
-        steps = _ref4.steps,
-        PopoverField = _ref4.PopoverField,
-        route = _ref4.route;
+var WorkflowButton = function WorkflowButton(_ref3) {
+    var recordId = _ref3.recordId,
+        recordType = _ref3.recordType,
+        selectedStepId = _ref3.selectedStepId,
+        steps = _ref3.steps,
+        PopoverField = _ref3.PopoverField,
+        route = _ref3.route;
 
     var _useState = (0, _react.useState)(selectedStepId),
         _useState2 = _slicedToArray(_useState, 2),
@@ -252,7 +229,8 @@ var WorkflowButton = function WorkflowButton(_ref4) {
         data: {
             popoverTitle: "Edit workflow state",
             buttonTooltip: "Edit workflow state",
-            placement: "top"
+            placement: "top",
+            trigger: "focus"
         }
     };
 
@@ -263,7 +241,7 @@ var WorkflowButton = function WorkflowButton(_ref4) {
     var createOnClick = function createOnClick(stepId) {
         return function () {
             setSelectedId(stepId);
-            sendSelectedStep({
+            (0, _helper.sendSelectedStep)({
                 route: route,
                 stepId: stepId,
                 recordId: recordId,
@@ -330,6 +308,42 @@ var WorkflowWidget = function WorkflowWidget(props) {
 
 exports.Component = WorkflowWidget;
 exports.default = (0, _Injector.inject)(["WorkflowButton"])(WorkflowWidget);
+
+/***/ }),
+
+/***/ "./client/src/helper.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var sendSelectedStep = exports.sendSelectedStep = function sendSelectedStep(_ref) {
+  var route = _ref.route,
+      stepId = _ref.stepId,
+      recordId = _ref.recordId,
+      recordType = _ref.recordType;
+
+  fetch(route, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      stepId: stepId,
+      recordId: recordId,
+      recordType: recordType
+    })
+  }).then(function (res) {
+    return res.json();
+  }).then(function (data) {
+    if (data.error) {
+      alert(data.error);
+    }
+  });
+};
 
 /***/ }),
 

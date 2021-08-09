@@ -1,26 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { inject } from "lib/Injector";
-
-const sendSelectedStep = ({ route, stepId, recordId, recordType }) => {
-    fetch(route, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            stepId,
-            recordId,
-            recordType,
-        }),
-    })
-        .then((res) => res.json())
-        .then((data) => {
-            if (data.error) {
-                alert(data.error);
-            }
-        });
-};
+import { sendSelectedStep } from "../helper";
 
 const WorkflowStep = ({ id, title, onClick, selectedId }) => (
     <button type="button" className="workflow__state" onClick={onClick}>
@@ -69,6 +50,7 @@ const WorkflowButton = ({
             popoverTitle: "Edit workflow state",
             buttonTooltip: "Edit workflow state",
             placement: "top",
+            trigger: "focus",
         },
     };
 

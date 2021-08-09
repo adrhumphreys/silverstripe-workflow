@@ -3,7 +3,6 @@
 namespace SilverStripe\Workflow;
 
 use DNADesign\Elemental\Models\BaseElement;
-use LogicException;
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\HTTPRequest;
@@ -35,8 +34,8 @@ class WorkflowController extends Controller
         $proposedRecordType = $input['recordType'];
 
         foreach ([$proposedStep, $proposedRecordId] as $inputCheck) {
-            if (!$inputCheck || !is_numeric($inputCheck)) {
-                return $this->createJsonResposne([
+            if (!is_numeric($inputCheck)) {
+                return $this->createJsonResponse([
                     'error' => 'Missing or invalid parameters',
                 ]);
             }
@@ -44,7 +43,7 @@ class WorkflowController extends Controller
 
         if ($proposedRecordType !== self::RECORD_TYPE_ELEMENT
             && $proposedRecordType !== self::RECORD_TYPE_PAGE) {
-            return $this->createJsonResposne([
+            return $this->createJsonResponse([
                 'error' => 'Invalid record type',
             ]);
         }
@@ -55,15 +54,15 @@ class WorkflowController extends Controller
             : BaseElement::get()->find('ID', $proposedRecordId);
 
         if (!$record) {
-            return $this->createJsonResposne([
+            return $this->createJsonResponse([
                 'error' => 'Record not found',
             ]);
         }
 
         $step = Step::get()->find('ID', $proposedStep);
 
-        if (!$step) {
-            return $this->createJsonResposne([
+        if (!$step && $proposedStep !== 0) {
+            return $this->createJsonResponse([
                 'error' => 'Step not found',
             ]);
         }
@@ -80,15 +79,21 @@ class WorkflowController extends Controller
             $relatedStep->setField($relatedStepField, $record->ID);
         }
 
-        $relatedStep->StepID = $step->ID;
+        $relatedStep->StepID = $step
+            ? $step->ID
+            : 0;
         $relatedStep->write();
 
-        return $this->createJsonResposne([
+        $response = $this->createJsonResponse([
             'success' => true,
         ]);
+
+        $this->extend('updateResponse', $response, $record, $relatedStep, $step);
+
+        return $response;
     }
 
-    public function createJsonResposne(array $data): HTTPResponse
+    public function createJsonResponse(array $data): HTTPResponse
     {
         $body = json_encode($data, JSON_PRETTY_PRINT);
 

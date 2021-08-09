@@ -11,6 +11,7 @@ use SilverStripe\ORM\DataObject;
  * @property int StepID
  * @property int PageID
  * @property int ElementID
+ * @method Step Step
  */
 class StepRelation extends DataObject
 {
