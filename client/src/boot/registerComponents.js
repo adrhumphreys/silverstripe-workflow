@@ -1,7 +1,10 @@
-import Injector from 'lib/Injector';
+import Injector from "lib/Injector";
+import WorkflowWidget from "../components/WorkflowWidget";
+import WorkflowButton from "../components/WorkflowButton";
 
 export default () => {
   Injector.component.registerMany({
-    // List your React components here so Injector is aware of them
+    WorkflowWidget: WorkflowWidget,
+    WorkflowButton: WorkflowButton,
   });
 };

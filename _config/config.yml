@@ -1,0 +1,31 @@
+---
+Name: workflow_siteconfig
+---
+SilverStripe\SiteConfig\SiteConfig:
+  extensions:
+    - SilverStripe\Workflow\SiteConfigExtension
+
+---
+Name: workflow_relation
+---
+SilverStripe\CMS\Model\SiteTree:
+  extensions:
+    WorkflowExtension: SilverStripe\Workflow\StepRelationExtension
+
+DNADesign\Elemental\Models\BaseElement:
+  extensions:
+    WorkflowExtension: SilverStripe\Workflow\StepRelationExtension
+
+---
+Name: workflow_assets
+---
+SilverStripe\Admin\LeftAndMain:
+  extra_requirements_javascript:
+    - 'silverstripe/workflow: client/dist/js/bundle.js'
+
+---
+Name: workflow_routes
+---
+SilverStripe\Control\Director:
+  rules:
+    cms/api/workflow: SilverStripe\Workflow\WorkflowController
