@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import PropTypes from "prop-types";
 import {
     UncontrolledButtonDropdown,
@@ -21,13 +21,26 @@ const WorkflowButton = (props) => {
         WorkflowStep,
     } = props;
     const [selectedId, setSelectedId] = useState(selectedStepId);
+    const [title, setTitle] = useState(null);
+    const [icon, setIcon] = useState(null);
 
-    const selectedSteps = steps.filter((s) => s.id === selectedId);
-    const selectedStep =
-        Array.isArray(selectedSteps) && selectedSteps.length > 0
-            ? selectedSteps[0]
-            : null;
-    const title = selectedStep ? `${selectedStep.title}` : "Workflow";
+    // This prop gets changed so we need to update it
+    useEffect(() => {
+        setSelectedId(selectedStepId);
+    }, [selectedStepId]);
+
+    useEffect(() => {
+        const selectedSteps = steps.filter((s) => s.id === selectedId);
+        const selectedStep =
+            Array.isArray(selectedSteps) && selectedSteps.length > 0
+                ? selectedSteps[0]
+                : null;
+
+        if (selectedStep) {
+            setTitle(selectedStep.title);
+            setIcon(selectedStep.icon);
+        }
+    }, [selectedId]);
 
     const createOnClick = (stepId) => () => {
         setSelectedId(stepId);
@@ -39,22 +52,34 @@ const WorkflowButton = (props) => {
         });
     };
 
-    const renderedSteps = steps.map((s) => (
-        <WorkflowStep
-            key={s.id}
-            {...s}
-            onClick={createOnClick(s.id)}
-            selectedId={selectedId}
-        />
-    ));
+    const renderedSteps = steps
+        ? steps.map((s) => (
+              <WorkflowStep
+                  key={s.id}
+                  {...s}
+                  onClick={createOnClick(s.id)}
+                  selectedId={selectedId}
+              />
+          ))
+        : null;
 
     return (
         <div className="workflow-widget">
             <UncontrolledButtonDropdown>
-                <DropdownToggle>
-                    <WorkflowIcon />
-                    {title}
-                    <span className="sr-only">Update workflow</span>
+                <DropdownToggle
+                    className={classNames("workflow-widget__button", {
+                        "workflow-widget__button--loading":
+                            renderedSteps === null,
+                    })}
+                >
+                    {icon ? (
+                        <img src={icon} alt={title} />
+                    ) : (
+                        <div>
+                            <WorkflowIcon />
+                            {title}
+                        </div>
+                    )}
                 </DropdownToggle>
                 <DropdownMenu>{renderedSteps}</DropdownMenu>
             </UncontrolledButtonDropdown>

@@ -4,6 +4,9 @@ namespace SilverStripe\Workflow;
 
 use DNADesign\Elemental\Models\BaseElement;
 use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\Control\Director;
+use SilverStripe\Core\Manifest\ModuleResource;
+use SilverStripe\Core\Manifest\ModuleResourceLoader;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\ORM\DataObject;
@@ -53,11 +56,6 @@ class Step extends DataObject
         'Workflow' => SiteConfig::class,
     ];
 
-    private static array $has_many = [
-        'Pages' => SiteTree::class,
-        'Elements' => BaseElement::class,
-    ];
-
     public function getCMSFields(): FieldList
     {
         $fields = parent::getCMSFields();
@@ -75,5 +73,22 @@ class Step extends DataObject
         ));
 
         return $fields;
+    }
+
+    public function getIconPath(): string
+    {
+        $icon = $this->Icon ?? static::ICON_NONE;
+
+        $iconPath = sprintf('silverstripe/workflow: client/assets/%s', $icon);
+
+        // Icon is relative resource
+        $iconResource = ModuleResourceLoader::singleton()->resolveResource($iconPath);
+        if ($iconResource instanceof ModuleResource) {
+            return $iconResource->getURL();
+        }
+
+        // Under the assumption that anyone that adds custom icons will include the full
+        // path to those icons
+        return $icon;
     }
 }

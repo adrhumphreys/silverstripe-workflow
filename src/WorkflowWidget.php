@@ -4,6 +4,8 @@ namespace SilverStripe\Workflow;
 
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Core\Extensible;
+use SilverStripe\Core\Manifest\ModuleResource;
+use SilverStripe\Core\Manifest\ModuleResourceLoader;
 use SilverStripe\Forms\FormField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\View\ArrayData;
@@ -40,17 +42,14 @@ class WorkflowWidget extends FormField
 
     public function getProps(): array
     {
-        $steps = [
-            [
-                'id' => 0,
-                'title' => 'Nothing selected',
-            ]
-        ];
+        $steps = [WorkflowWidget::getNothingStep()];
 
+        /** @var Step $step */
         foreach (Step::get() as $step) {
             $steps[] = [
                 'id' => $step->ID,
                 'title' => $step->Title,
+                'icon' => $step->getIconPath(),
             ];
         }
 
@@ -92,5 +91,18 @@ class WorkflowWidget extends FormField
     public function setUseButtonTag(): void
     {
         // This is a method that's assumed to exist
+    }
+
+    public static function getNothingStep(): array
+    {
+        // Icon is relative resource
+        $iconResource = ModuleResourceLoader::singleton()
+            ->resolveResource('silverstripe/workflow: client/assets/none.svg');
+
+        return [
+            'id' => 0,
+            'title' => 'Nothing selected',
+            'icon' => $iconResource->getURL(),
+        ];
     }
 }

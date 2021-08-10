@@ -7,6 +7,7 @@ use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
+use SilverStripe\ORM\DataObject;
 
 class WorkflowController extends Controller
 {
@@ -19,10 +20,12 @@ class WorkflowController extends Controller
 
     private static array $url_handlers = [
         'POST /' => 'handleChange',
+        'GET steps' => 'getSteps',
     ];
 
     private static array $allowed_actions = [
         'handleChange',
+        'getSteps',
     ];
 
     public function handleChange(HTTPRequest $request): HTTPResponse
@@ -91,6 +94,56 @@ class WorkflowController extends Controller
         $this->extend('updateResponse', $response, $record, $relatedStep, $step);
 
         return $response;
+    }
+
+    public function getSteps(HTTPRequest $request): HTTPResponse
+    {
+        $data = [];
+        $recordId = $request->getVar('id');
+        $recordType = $request->getVar('type');
+
+        if ($recordId && $recordType) {
+            $relation = $this->getRelationByTypeID($recordId, $recordType);
+            if ($relation) {
+                $data['selectedStepId'] = $relation->StepID;
+            }
+        }
+
+        $steps = [WorkflowWidget::getNothingStep()];
+
+        /** @var Step $step */
+        foreach (Step::get() as $step) {
+            $steps[] = [
+                'id' => $step->ID,
+                'title' => $step->Title,
+                'icon' => $step->getIconPath(),
+            ];
+        }
+
+        $data['steps'] = $steps;
+
+        return $this->createJsonResponse($data);
+    }
+
+    public function getRelationByTypeID(string $id, string $type): ?StepRelation
+    {
+        $record = $type === self::RECORD_TYPE_PAGE
+            ? SiteTree::get()->find('ID', $id)
+            : BaseElement::get()->find('ID', $id);
+
+        if (!$record) {
+            return null;
+        }
+
+        $relatedStepField = $record instanceof SiteTree
+            ? 'PageID'
+            : 'ElementID';
+
+        /** @var StepRelation $relation */
+        $relation = StepRelation::get()
+            ->find($relatedStepField, $record->ID);
+
+        return $relation;
     }
 
     public function createJsonResponse(array $data): HTTPResponse

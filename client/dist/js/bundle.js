@@ -96,6 +96,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _Injector = __webpack_require__(4);
 
 var _Injector2 = _interopRequireDefault(_Injector);
@@ -116,6 +118,10 @@ var _WorkflowStep = __webpack_require__("./client/src/components/WorkflowStep.js
 
 var _WorkflowStep2 = _interopRequireDefault(_WorkflowStep);
 
+var _ElementActions = __webpack_require__("./client/src/components/ElementActions.jsx");
+
+var _ElementActions2 = _interopRequireDefault(_ElementActions);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function () {
@@ -124,6 +130,14 @@ exports.default = function () {
     WorkflowButton: _WorkflowButton2.default,
     WorkflowIcon: _WorkflowIcon2.default,
     WorkflowStep: _WorkflowStep2.default
+  });
+
+  _Injector2.default.transform("workflow", function (updater) {
+    updater.component("ElementActions", function (ActionCompontent) {
+      return function (props) {
+        return React.createElement(_ElementActions2.default, _extends({ ActionCompontent: ActionCompontent }, props));
+      };
+    }, "WorkflowElementActions");
   });
 };
 
@@ -138,6 +152,81 @@ exports.default = function () {
 __webpack_require__("./client/src/legacy/entwine/index.js");
 
 __webpack_require__("./client/src/boot/index.js");
+
+/***/ }),
+
+/***/ "./client/src/components/ElementActions.jsx":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Component = undefined;
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _helper = __webpack_require__("./client/src/helper.js");
+
+var _Injector = __webpack_require__(4);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ElementActions = function ElementActions(props) {
+    var ActionCompontent = props.ActionCompontent,
+        WorkflowButton = props.WorkflowButton;
+
+    var _useState = (0, _react.useState)([]),
+        _useState2 = _slicedToArray(_useState, 2),
+        steps = _useState2[0],
+        setSteps = _useState2[1];
+
+    var _useState3 = (0, _react.useState)(0),
+        _useState4 = _slicedToArray(_useState3, 2),
+        selectedStepId = _useState4[0],
+        setSelectedStepId = _useState4[1];
+
+    var recordId = props.element.id;
+    var recordType = "element";
+
+    (0, _react.useEffect)(function () {
+        (0, _helper.getSteps)({
+            route: "cms/api/workflow/steps/",
+            recordId: recordId,
+            recordType: recordType
+        }).then(function (_ref) {
+            var steps = _ref.steps,
+                selectedStepId = _ref.selectedStepId;
+
+            setSteps(steps);
+            setSelectedStepId(selectedStepId);
+        });
+    }, []);
+
+    var buttonProps = {
+        recordId: recordId,
+        recordType: recordType,
+        route: "cms/api/workflow",
+        steps: steps,
+        selectedStepId: selectedStepId
+    };
+
+    return _react2.default.createElement(
+        "div",
+        { className: "workflow-element-actions" },
+        _react2.default.createElement(WorkflowButton, buttonProps),
+        _react2.default.createElement(ActionCompontent, props)
+    );
+};
+
+exports.Component = ElementActions;
+exports.default = (0, _Injector.inject)(["WorkflowButton"])(ElementActions);
 
 /***/ }),
 
@@ -190,11 +279,31 @@ var WorkflowButton = function WorkflowButton(props) {
         selectedId = _useState2[0],
         setSelectedId = _useState2[1];
 
-    var selectedSteps = steps.filter(function (s) {
-        return s.id === selectedId;
-    });
-    var selectedStep = Array.isArray(selectedSteps) && selectedSteps.length > 0 ? selectedSteps[0] : null;
-    var title = selectedStep ? "" + selectedStep.title : "Workflow";
+    var _useState3 = (0, _react.useState)(null),
+        _useState4 = _slicedToArray(_useState3, 2),
+        title = _useState4[0],
+        setTitle = _useState4[1];
+
+    var _useState5 = (0, _react.useState)(null),
+        _useState6 = _slicedToArray(_useState5, 2),
+        icon = _useState6[0],
+        setIcon = _useState6[1];
+
+    (0, _react.useEffect)(function () {
+        setSelectedId(selectedStepId);
+    }, [selectedStepId]);
+
+    (0, _react.useEffect)(function () {
+        var selectedSteps = steps.filter(function (s) {
+            return s.id === selectedId;
+        });
+        var selectedStep = Array.isArray(selectedSteps) && selectedSteps.length > 0 ? selectedSteps[0] : null;
+
+        if (selectedStep) {
+            setTitle(selectedStep.title);
+            setIcon(selectedStep.icon);
+        }
+    }, [selectedId]);
 
     var createOnClick = function createOnClick(stepId) {
         return function () {
@@ -208,14 +317,14 @@ var WorkflowButton = function WorkflowButton(props) {
         };
     };
 
-    var renderedSteps = steps.map(function (s) {
+    var renderedSteps = steps ? steps.map(function (s) {
         return _react2.default.createElement(WorkflowStep, _extends({
             key: s.id
         }, s, {
             onClick: createOnClick(s.id),
             selectedId: selectedId
         }));
-    });
+    }) : null;
 
     return _react2.default.createElement(
         "div",
@@ -225,13 +334,16 @@ var WorkflowButton = function WorkflowButton(props) {
             null,
             _react2.default.createElement(
                 _reactstrap.DropdownToggle,
-                null,
-                _react2.default.createElement(WorkflowIcon, null),
-                title,
-                _react2.default.createElement(
-                    "span",
-                    { className: "sr-only" },
-                    "Update workflow"
+                {
+                    className: (0, _classnames2.default)("workflow-widget__button", {
+                        "workflow-widget__button--loading": renderedSteps === null
+                    })
+                },
+                icon ? _react2.default.createElement("img", { src: icon, alt: title }) : _react2.default.createElement(
+                    "div",
+                    null,
+                    _react2.default.createElement(WorkflowIcon, null),
+                    title
                 )
             ),
             _react2.default.createElement(
@@ -270,20 +382,63 @@ var WorkflowIcon = function WorkflowIcon() {
     return _react2.default.createElement(
         "svg",
         {
-            "aria-hidden": "true",
-            focusable: "false",
-            "data-prefix": "far",
-            "data-icon": "map",
-            role: "img",
-            xmlns: "http://www.w3.org/2000/svg",
-            viewBox: "0 0 576 512",
-            height: "30px",
-            width: "30px"
+            width: "22",
+            height: "22",
+            viewBox: "0 0 22 22",
+            xmlns: "http://www.w3.org/2000/svg"
         },
-        _react2.default.createElement("path", {
-            fill: "currentColor",
-            d: "M560.02 32c-1.96 0-3.98.37-5.96 1.16L384.01 96H384L212 35.28A64.252 64.252 0 0 0 191.76 32c-6.69 0-13.37 1.05-19.81 3.14L20.12 87.95A32.006 32.006 0 0 0 0 117.66v346.32C0 473.17 7.53 480 15.99 480c1.96 0 3.97-.37 5.96-1.16L192 416l172 60.71a63.98 63.98 0 0 0 40.05.15l151.83-52.81A31.996 31.996 0 0 0 576 394.34V48.02c0-9.19-7.53-16.02-15.98-16.02zM224 90.42l128 45.19v285.97l-128-45.19V90.42zM48 418.05V129.07l128-44.53v286.2l-.64.23L48 418.05zm480-35.13l-128 44.53V141.26l.64-.24L528 93.95v288.97z"
-        })
+        _react2.default.createElement(
+            "defs",
+            null,
+            _react2.default.createElement("circle", { id: "a", cx: "11", cy: "11", r: "11" }),
+            _react2.default.createElement("path", { id: "c", d: "M0 0h11v22H0z" }),
+            _react2.default.createElement(
+                "mask",
+                {
+                    id: "b",
+                    maskContentUnits: "userSpaceOnUse",
+                    maskUnits: "objectBoundingBox",
+                    x: "0",
+                    y: "0",
+                    width: "22",
+                    height: "22",
+                    fill: "#fff"
+                },
+                _react2.default.createElement("use", { xlinkHref: "#a" })
+            )
+        ),
+        _react2.default.createElement(
+            "g",
+            { fill: "none", "fill-rule": "evenodd" },
+            _react2.default.createElement("use", {
+                stroke: "#6F84A7",
+                mask: "url(#b)",
+                "stroke-width": "4",
+                "stroke-dasharray": "3,3",
+                xlinkHref: "#a"
+            }),
+            _react2.default.createElement(
+                "g",
+                { transform: "translate(11)" },
+                _react2.default.createElement(
+                    "mask",
+                    { id: "d", fill: "#fff" },
+                    _react2.default.createElement("use", { xlinkHref: "#c" })
+                ),
+                _react2.default.createElement("circle", {
+                    stroke: "#6F84A7",
+                    "stroke-width": "2",
+                    mask: "url(#d)",
+                    cy: "11",
+                    r: "10"
+                })
+            ),
+            _react2.default.createElement(
+                "g",
+                { fill: "#6F84A7", "fill-rule": "nonzero" },
+                _react2.default.createElement("path", { d: "M7.333 9.07H4l1.208 2.43L4 13.93h3.333l1.209-2.43zM12.333 9.07H9l1.194 2.43L9 13.93h3.333l1.195-2.43zM17.57 9.07h-3.334l1.208 2.43-1.208 2.43h3.333l1.209-2.43z" })
+            )
+        )
     );
 };
 
@@ -317,7 +472,8 @@ var WorkflowStep = function WorkflowStep(_ref) {
     var id = _ref.id,
         title = _ref.title,
         onClick = _ref.onClick,
-        selectedId = _ref.selectedId;
+        selectedId = _ref.selectedId,
+        icon = _ref.icon;
     return _react2.default.createElement(
         _reactstrap.DropdownItem,
         {
@@ -329,8 +485,8 @@ var WorkflowStep = function WorkflowStep(_ref) {
             toggle: false,
             disabled: selectedId === id
         },
-        title,
-        selectedId === id && id !== 0 ? _react2.default.createElement("span", { className: "font-icon font-icon-check-mark-circle" }) : null
+        _react2.default.createElement("img", { src: icon, "aria-hidden": "true" }),
+        title
     );
 };
 
@@ -383,6 +539,9 @@ exports.default = (0, _Injector.inject)(["WorkflowButton"])(WorkflowWidget);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 var sendSelectedStep = exports.sendSelectedStep = function sendSelectedStep(_ref) {
   var route = _ref.route,
       stepId = _ref.stepId,
@@ -407,6 +566,44 @@ var sendSelectedStep = exports.sendSelectedStep = function sendSelectedStep(_ref
     }
   });
 };
+
+var getSteps = exports.getSteps = function () {
+  var _ref3 = _asyncToGenerator(regeneratorRuntime.mark(function _callee(_ref2) {
+    var route = _ref2.route,
+        recordId = _ref2.recordId,
+        recordType = _ref2.recordType;
+    var ourRoute;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            ourRoute = recordId && recordType ? route + "?id=" + recordId + "&type=" + recordType : route;
+            return _context.abrupt("return", fetch(ourRoute).then(function (res) {
+              return res.json();
+            }).then(function (data) {
+              var steps = data.steps,
+                  _data$selectedStepId = data.selectedStepId,
+                  selectedStepId = _data$selectedStepId === undefined ? 0 : _data$selectedStepId;
+
+
+              return {
+                steps: steps,
+                selectedStepId: selectedStepId
+              };
+            }));
+
+          case 2:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, undefined);
+  }));
+
+  return function getSteps(_x) {
+    return _ref3.apply(this, arguments);
+  };
+}();
 
 /***/ }),
 

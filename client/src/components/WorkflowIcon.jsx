@@ -3,20 +3,51 @@ import { inject } from "lib/Injector";
 
 const WorkflowIcon = () => (
     <svg
-        aria-hidden="true"
-        focusable="false"
-        data-prefix="far"
-        data-icon="map"
-        role="img"
+        width="22"
+        height="22"
+        viewBox="0 0 22 22"
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 576 512"
-        height="30px"
-        width="30px"
     >
-        <path
-            fill="currentColor"
-            d="M560.02 32c-1.96 0-3.98.37-5.96 1.16L384.01 96H384L212 35.28A64.252 64.252 0 0 0 191.76 32c-6.69 0-13.37 1.05-19.81 3.14L20.12 87.95A32.006 32.006 0 0 0 0 117.66v346.32C0 473.17 7.53 480 15.99 480c1.96 0 3.97-.37 5.96-1.16L192 416l172 60.71a63.98 63.98 0 0 0 40.05.15l151.83-52.81A31.996 31.996 0 0 0 576 394.34V48.02c0-9.19-7.53-16.02-15.98-16.02zM224 90.42l128 45.19v285.97l-128-45.19V90.42zM48 418.05V129.07l128-44.53v286.2l-.64.23L48 418.05zm480-35.13l-128 44.53V141.26l.64-.24L528 93.95v288.97z"
-        ></path>
+        <defs>
+            <circle id="a" cx="11" cy="11" r="11" />
+            <path id="c" d="M0 0h11v22H0z" />
+            <mask
+                id="b"
+                maskContentUnits="userSpaceOnUse"
+                maskUnits="objectBoundingBox"
+                x="0"
+                y="0"
+                width="22"
+                height="22"
+                fill="#fff"
+            >
+                <use xlinkHref="#a" />
+            </mask>
+        </defs>
+        <g fill="none" fill-rule="evenodd">
+            <use
+                stroke="#6F84A7"
+                mask="url(#b)"
+                stroke-width="4"
+                stroke-dasharray="3,3"
+                xlinkHref="#a"
+            />
+            <g transform="translate(11)">
+                <mask id="d" fill="#fff">
+                    <use xlinkHref="#c" />
+                </mask>
+                <circle
+                    stroke="#6F84A7"
+                    stroke-width="2"
+                    mask="url(#d)"
+                    cy="11"
+                    r="10"
+                />
+            </g>
+            <g fill="#6F84A7" fill-rule="nonzero">
+                <path d="M7.333 9.07H4l1.208 2.43L4 13.93h3.333l1.209-2.43zM12.333 9.07H9l1.194 2.43L9 13.93h3.333l1.195-2.43zM17.57 9.07h-3.334l1.208 2.43-1.208 2.43h3.333l1.209-2.43z" />
+            </g>
+        </g>
     </svg>
 );
 

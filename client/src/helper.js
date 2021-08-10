@@ -17,3 +17,22 @@ export const sendSelectedStep = ({ route, stepId, recordId, recordType }) => {
       }
     });
 };
+
+// Assumes that the route has no query params if passed the record id and type
+export const getSteps = async ({ route, recordId, recordType }) => {
+  const ourRoute =
+    recordId && recordType
+      ? `${route}?id=${recordId}&type=${recordType}`
+      : route;
+
+  return fetch(ourRoute)
+    .then((res) => res.json())
+    .then((data) => {
+      const { steps, selectedStepId = 0 } = data;
+
+      return {
+        steps,
+        selectedStepId,
+      };
+    });
+};

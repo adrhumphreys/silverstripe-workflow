@@ -21,7 +21,12 @@ class StepRelationExtension extends DataExtension
             return;
         }
 
-        // TODO: Get elemental to support adding in custom actions
+        // If the element is inline editable then we don't need to worry about adding
+        // the field
+        if ($this->owner->inlineEditable()) {
+            return;
+        }
+
         $fields->addFieldToTab(
             'Root.Main',
             WorkflowWidget::create($this->owner),

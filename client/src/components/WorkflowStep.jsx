@@ -2,7 +2,7 @@ import { DropdownItem } from "reactstrap";
 import classNames from "classnames";
 import React from "react";
 
-const WorkflowStep = ({ id, title, onClick, selectedId }) => (
+const WorkflowStep = ({ id, title, onClick, selectedId, icon }) => (
     <DropdownItem
         className={classNames("workflow-widget__item", {
             "workflow-widget__item--no-state": id === 0,
@@ -12,10 +12,8 @@ const WorkflowStep = ({ id, title, onClick, selectedId }) => (
         toggle={false}
         disabled={selectedId === id}
     >
+        <img src={icon} aria-hidden="true" />
         {title}
-        {selectedId === id && id !== 0 ? (
-            <span className="font-icon font-icon-check-mark-circle" />
-        ) : null}
     </DropdownItem>
 );
 
