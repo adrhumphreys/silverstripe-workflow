@@ -43,7 +43,7 @@ class WorkflowWidget extends FormField
         $steps = [
             [
                 'id' => 0,
-                'title' => 'No step',
+                'title' => 'Nothing selected',
             ]
         ];
 

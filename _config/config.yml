@@ -22,6 +22,8 @@ Name: workflow_assets
 SilverStripe\Admin\LeftAndMain:
   extra_requirements_javascript:
     - 'silverstripe/workflow: client/dist/js/bundle.js'
+  extra_requirements_css:
+    - 'silverstripe/workflow: client/dist/styles/bundle.css'
 
 ---
 Name: workflow_routes

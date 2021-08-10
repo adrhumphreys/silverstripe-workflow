@@ -1,0 +1,24 @@
+<svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <circle id="a" cx="11" cy="11" r="11"/>
+        <path id="c" d="M0 0h11v22H0z"/>
+        <mask id="b" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="22" height="22"
+              fill="#fff">
+            <use xlink:href="#a"/>
+        </mask>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g fill="#43536D">
+            <path
+                d="M7.411 5.31l-.461.46c-.365-.364-1.47.742-1.106 1.106l-.461.462c-.134.133-.097.388.097.583 1.02 1.02 1.956 2.053 3.255 1.7l2.685 2.685.947-.948-2.684-2.684c.364-1.312-.668-2.247-1.689-3.268-.194-.194-.45-.23-.583-.097zM8.662 8.6c-.716.717-1.64-.085-2.38-.826l.23-.23c.365.364 1.47-.742 1.106-1.106l.218-.219c.754.753 1.555 1.652.826 2.381zM13.254 11.055l-2.308 2.308c-.11.109-.085.327.073.485 1.421 1.422 3.389 3.705 4.992 2.102 1.543-1.543-.498-3.39-1.883-4.774-.279-.28-.656-.34-.874-.121z"/>
+        </g>
+        <use stroke="#43536D" mask="url(#b)" stroke-width="4" stroke-dasharray="3,3" xlink:href="#a"/>
+        <g transform="translate(11)">
+            <mask id="d" fill="#fff">
+                <use xlink:href="#c"/>
+            </mask>
+            <circle stroke="#43536D" stroke-width="2" mask="url(#d)" cy="11" r="10"/>
+        </g>
+    </g>
+</svg>

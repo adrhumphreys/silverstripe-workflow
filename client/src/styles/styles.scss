@@ -1,0 +1,45 @@
+$grey: #f1f3f6;
+$dark-grey: #566b8d;
+
+.workflow-widget .btn {
+  align-items: center;
+  background-color: transparent;
+  border: 0;
+  border-radius: 3px;
+  display: flex;
+  padding: 0 5px 0 2px;
+
+  svg {
+    margin-right: 5px;
+    width: 20px;
+  }
+}
+
+.workflow-widget__item {
+  font-size: 1.05rem;
+  padding-left: 14px;
+  padding-right: 14px;
+  transition: color 150ms, background-color 150ms;
+
+  &.workflow-widget__item--active {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+
+    span {
+      display: flex;
+      font-size: 22px;
+      margin-left: 20px;
+    }
+  }
+
+  &.workflow-widget__item--no-state {
+    color: $dark-grey;
+    font-style: italic;
+  }
+
+  &:hover, &:focus, &:active {
+    background-color: $dark-grey;
+    color: white;
+  }
+}
