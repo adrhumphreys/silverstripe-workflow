@@ -29,14 +29,34 @@ $dark-grey: #566b8d;
   }
 }
 
+.workflow-widget__item__icon {
+  font-size: 22px;
+
+  &.workflow-widget__item__icon--red {
+    color: red;
+  }
+
+  &.workflow-widget__item__icon--blue {
+    color: blue;
+  }
+
+  &.workflow-widget__item__icon--green {
+    color: green;
+  }
+}
+
 .workflow-widget__item {
   display: flex;
   align-items: center;
   font-size: 1.05rem;
   // This is to prevent us running into resize issues when you select an item
   min-width: 140px;
-  padding: 5px 18px;
+  padding: 7px 18px;
   transition: color 150ms, background-color 150ms;
+
+  .workflow-widget__item__icon {
+    margin-right: 12px;
+  }
 
   img {
     padding: 2px;
@@ -54,6 +74,10 @@ $dark-grey: #566b8d;
 
     img {
       background-color: white;
+    }
+
+    .workflow-widget__item__icon {
+      color: white;
     }
   }
 

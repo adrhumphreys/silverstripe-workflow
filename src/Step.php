@@ -2,12 +2,10 @@
 
 namespace SilverStripe\Workflow;
 
+use BucklesHusky\FontAwesomeIconPicker\Forms\FAPickerField;
 use DNADesign\Elemental\Models\BaseElement;
 use SilverStripe\CMS\Model\SiteTree;
-use SilverStripe\Control\Director;
-use SilverStripe\Core\Manifest\ModuleResource;
-use SilverStripe\Core\Manifest\ModuleResourceLoader;
-use SilverStripe\Forms\DropdownField;
+use SilverStripe\Colorpicker\Forms\ColorPickerField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\HasManyList;
@@ -15,7 +13,8 @@ use SilverStripe\SiteConfig\SiteConfig;
 
 /**
  * @property string Title
- * @property string Icon
+ * @property string FAIcon
+ * @property string Color
  * @property int Sort
  * @property int WorkflowID
  * @method SiteConfig Workflow
@@ -24,18 +23,6 @@ use SilverStripe\SiteConfig\SiteConfig;
  */
 class Step extends DataObject
 {
-    public const ICON_NONE = 'none.svg';
-    public const ICON_WORK_IN_PROGRESS = 'work-in-progress.svg';
-    public const ICON_WAITING = 'waiting.svg';
-    public const ICON_DONE = 'done.svg';
-
-    private const ICONS = [
-        self::ICON_NONE => 'None',
-        self::ICON_WORK_IN_PROGRESS => 'Work in progress',
-        self::ICON_WAITING => 'Waiting',
-        self::ICON_DONE => 'Done',
-    ];
-
     private static string $singular_name = 'Step';
 
     private static string $plural_name = 'Steps';
@@ -44,12 +31,9 @@ class Step extends DataObject
 
     private static array $db = [
         'Title' => 'Varchar(255)',
-        'Icon' => 'Varchar(255)',
+        'FAIcon' => 'Varchar(255)',
+        'Color' => 'Varchar(255)',
         'Sort' => 'Int',
-    ];
-
-    private static array $defaults = [
-        'Icon' => self::ICON_NONE,
     ];
 
     private static array $has_one = [
@@ -61,34 +45,46 @@ class Step extends DataObject
         $fields = parent::getCMSFields();
 
         $fields->removeByName([
-            'Icon',
+            'FAIcon',
             'Sort',
             'Pages',
             'Elements',
             'WorkflowID',
         ]);
 
-        $fields->addFieldToTab('Root.Main', DropdownField::create(
-           'Icon', 'Icon',  self::ICONS
-        ));
+        $fields->addFieldToTab(
+            'Root.Main',
+            FAPickerField::create('FAIcon', 'Icon')
+        );
+
+        $fields->addFieldsToTab(
+            'Root.Main',
+            [
+                ColorPickerField::create(
+                    'Color',
+                    'Icon color',
+                    [
+                        [
+                            'Title' => 'Red',
+                            'CSSClass' => 'workflow-widget__item__icon--red',
+                            'Color' => '#E51016',
+                        ],
+                        [
+                            'Title' => 'Blue',
+                            'CSSClass' => 'workflow-widget__item__icon--blue',
+                            'Color' => '#1F6BFE',
+                        ],
+                        [
+                            'Title' => 'Green',
+                            'CSSClass' => 'workflow-widget__item__icon--green',
+                            'Color' => '#298436',
+                        ]
+                    ]
+                )
+            ],
+            'FAIcon'
+        );
 
         return $fields;
-    }
-
-    public function getIconPath(): string
-    {
-        $icon = $this->Icon ?? static::ICON_NONE;
-
-        $iconPath = sprintf('silverstripe/workflow: client/assets/%s', $icon);
-
-        // Icon is relative resource
-        $iconResource = ModuleResourceLoader::singleton()->resolveResource($iconPath);
-        if ($iconResource instanceof ModuleResource) {
-            return $iconResource->getURL();
-        }
-
-        // Under the assumption that anyone that adds custom icons will include the full
-        // path to those icons
-        return $icon;
     }
 }

@@ -20,6 +20,7 @@ We've tried to make it so you can just add some extension points and methods to 
 ### Editing the response when upating a workflow:
 `WorkflowControllerExtension::handleChange` is the method that is called and it fires of anextension hook of `updateResponse`. If you update the response to include in the json and array of links with the key `links` you can include the link to the relevant service where needed
 
+
 ## License
 See [License](license.md)
 

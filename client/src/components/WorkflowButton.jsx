@@ -24,6 +24,7 @@ const WorkflowButton = (props) => {
     const [selectedId, setSelectedId] = useState(selectedStepId);
     const [title, setTitle] = useState(null);
     const [icon, setIcon] = useState(null);
+    const [faIcon, setFaIcon] = useState("fas fa-spinner");
     const [customLinks, setCustomLinks] = useState(links);
 
     useEffect(() => {
@@ -45,6 +46,7 @@ const WorkflowButton = (props) => {
         if (selectedStep) {
             setTitle(selectedStep.title);
             setIcon(selectedStep.icon);
+            setFaIcon(selectedStep.faIcon);
         }
     }, [selectedId]);
 
@@ -94,18 +96,16 @@ const WorkflowButton = (props) => {
                             renderedSteps === null,
                     })}
                 >
-                    {icon ? (
-                        <img src={icon} alt={title} />
-                    ) : (
-                        <div>
-                            <WorkflowIcon />
-                            {title}
-                        </div>
-                    )}
+                    <span
+                        className={classNames(
+                            "workflow-widget__item__icon",
+                            faIcon
+                        )}
+                    />
                 </DropdownToggle>
                 <DropdownMenu>
                     {renderedSteps}{" "}
-                    {renderedLinks ? (
+                    {renderedLinks && renderedLinks.length > 0 ? (
                         <Fragment>
                             <DropdownItem divider />
                             {renderedLinks}

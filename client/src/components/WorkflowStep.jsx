@@ -2,7 +2,7 @@ import { DropdownItem } from "reactstrap";
 import classNames from "classnames";
 import React from "react";
 
-const WorkflowStep = ({ id, title, onClick, selectedId, icon }) => (
+const WorkflowStep = ({ id, title, onClick, selectedId, faIcon = "fas" }) => (
     <DropdownItem
         className={classNames("workflow-widget__item", {
             "workflow-widget__item--no-state": id === 0,
@@ -11,7 +11,7 @@ const WorkflowStep = ({ id, title, onClick, selectedId, icon }) => (
         onClick={onClick}
         disabled={selectedId === id}
     >
-        <img src={icon} aria-hidden="true" />
+        <span className={classNames("workflow-widget__item__icon", faIcon)} />
         {title}
     </DropdownItem>
 );

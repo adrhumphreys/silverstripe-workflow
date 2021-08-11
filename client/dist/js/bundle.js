@@ -297,10 +297,15 @@ var WorkflowButton = function WorkflowButton(props) {
         icon = _useState6[0],
         setIcon = _useState6[1];
 
-    var _useState7 = (0, _react.useState)(links),
+    var _useState7 = (0, _react.useState)("fas fa-spinner"),
         _useState8 = _slicedToArray(_useState7, 2),
-        customLinks = _useState8[0],
-        setCustomLinks = _useState8[1];
+        faIcon = _useState8[0],
+        setFaIcon = _useState8[1];
+
+    var _useState9 = (0, _react.useState)(links),
+        _useState10 = _slicedToArray(_useState9, 2),
+        customLinks = _useState10[0],
+        setCustomLinks = _useState10[1];
 
     (0, _react.useEffect)(function () {
         setCustomLinks(links);
@@ -319,6 +324,7 @@ var WorkflowButton = function WorkflowButton(props) {
         if (selectedStep) {
             setTitle(selectedStep.title);
             setIcon(selectedStep.icon);
+            setFaIcon(selectedStep.faIcon);
         }
     }, [selectedId]);
 
@@ -376,19 +382,16 @@ var WorkflowButton = function WorkflowButton(props) {
                         "workflow-widget__button--loading": renderedSteps === null
                     })
                 },
-                icon ? _react2.default.createElement("img", { src: icon, alt: title }) : _react2.default.createElement(
-                    "div",
-                    null,
-                    _react2.default.createElement(WorkflowIcon, null),
-                    title
-                )
+                _react2.default.createElement("span", {
+                    className: (0, _classnames2.default)("workflow-widget__item__icon", faIcon)
+                })
             ),
             _react2.default.createElement(
                 _reactstrap.DropdownMenu,
                 null,
                 renderedSteps,
                 " ",
-                renderedLinks ? _react2.default.createElement(
+                renderedLinks && renderedLinks.length > 0 ? _react2.default.createElement(
                     _react.Fragment,
                     null,
                     _react2.default.createElement(_reactstrap.DropdownItem, { divider: true }),
@@ -517,7 +520,8 @@ var WorkflowStep = function WorkflowStep(_ref) {
         title = _ref.title,
         onClick = _ref.onClick,
         selectedId = _ref.selectedId,
-        icon = _ref.icon;
+        _ref$faIcon = _ref.faIcon,
+        faIcon = _ref$faIcon === undefined ? "fas" : _ref$faIcon;
     return _react2.default.createElement(
         _reactstrap.DropdownItem,
         {
@@ -528,7 +532,7 @@ var WorkflowStep = function WorkflowStep(_ref) {
             onClick: onClick,
             disabled: selectedId === id
         },
-        _react2.default.createElement("img", { src: icon, "aria-hidden": "true" }),
+        _react2.default.createElement("span", { className: (0, _classnames2.default)("workflow-widget__item__icon", faIcon) }),
         title
     );
 };

@@ -8,7 +8,9 @@ use SilverStripe\Core\Manifest\ModuleResource;
 use SilverStripe\Core\Manifest\ModuleResourceLoader;
 use SilverStripe\Forms\FormField;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripe\View\ArrayData;
+use SilverStripe\Workflow\Trello\SiteConfigTrelloExtension;
 
 class WorkflowWidget extends FormField
 {
@@ -53,7 +55,7 @@ class WorkflowWidget extends FormField
             $steps[] = [
                 'id' => $step->ID,
                 'title' => $step->Title,
-                'icon' => $step->getIconPath(),
+                'faIcon' => $step->FAIcon . ' ' . $step->Color,
             ];
         }
 
@@ -99,14 +101,18 @@ class WorkflowWidget extends FormField
 
     public static function getNothingStep(): array
     {
+        /** @var SiteConfigExtension $config */
+        $config = SiteConfig::current_site_config();
+
         // Icon is relative resource
         $iconResource = ModuleResourceLoader::singleton()
             ->resolveResource('silverstripe/workflow: client/assets/none.svg');
 
         return [
             'id' => 0,
-            'title' => 'Nothing selected',
+            'title' => $config->WorkflowNoStepTitle ?? 'No step selected',
             'icon' => $iconResource->getURL(),
+            'faIcon' => $config->WorkflowNoStepFAIcon ?? 'fas fa-question-circle',
         ];
     }
 }
