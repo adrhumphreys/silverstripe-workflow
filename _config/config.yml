@@ -31,3 +31,10 @@ Name: workflow_routes
 SilverStripe\Control\Director:
   rules:
     cms/api/workflow: SilverStripe\Workflow\WorkflowController
+
+---
+Name: workflow_elemental
+---
+DNADesign\Elemental\Forms\ElementalAreaConfig:
+  extensions:
+    ElementalAreaConfigExtension: SilverStripe\Workflow\ElementalAreaConfigExtension

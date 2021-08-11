@@ -5,6 +5,10 @@ $dark-grey: #566b8d;
 .workflowwidget.workflow-widget {
   align-items: center;
   display: flex;
+
+  &.workflow-widget--margin-right {
+    margin-right: 160px;
+  }
 }
 
 .workflow-widget__button {

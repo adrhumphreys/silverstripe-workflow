@@ -25,11 +25,15 @@ class WorkflowWidget extends FormField
     /**
      * @param DataObject|StepRelationExtension $item
      */
-    public function __construct(DataObject $item)
+    public function __construct(DataObject $item, bool $addMarginRight = false)
     {
         parent::__construct('WorkflowWidget', 'Workflow');
         $this->item = $item;
         $this->addExtraClass('workflow-widget');
+
+        if ($addMarginRight) {
+            $this->addExtraClass('workflow-widget--margin-right');
+        }
     }
 
     /**

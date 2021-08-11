@@ -27,11 +27,11 @@ class StepRelationExtension extends DataExtension
             return;
         }
 
-        $fields->addFieldToTab(
-            'Root.Main',
-            WorkflowWidget::create($this->owner),
-            'Title'
-        );
+//        $fields->addFieldToTab(
+//            'Root.Main',
+//            WorkflowWidget::create($this->owner),
+//            'Title'
+//        );
     }
 
     public function updateCMSActions(FieldList $actions): void
