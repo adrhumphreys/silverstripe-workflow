@@ -9,7 +9,6 @@ const WorkflowStep = ({ id, title, onClick, selectedId, icon }) => (
             "workflow-widget__item--active": selectedId === id,
         })}
         onClick={onClick}
-        toggle={false}
         disabled={selectedId === id}
     >
         <img src={icon} aria-hidden="true" />

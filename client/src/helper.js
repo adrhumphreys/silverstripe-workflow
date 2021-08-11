@@ -1,4 +1,10 @@
-export const sendSelectedStep = ({ route, stepId, recordId, recordType }) => {
+export const sendSelectedStep = ({
+  route,
+  stepId,
+  recordId,
+  recordType,
+  setLinks,
+}) =>
   fetch(route, {
     method: "POST",
     headers: {
@@ -15,8 +21,13 @@ export const sendSelectedStep = ({ route, stepId, recordId, recordType }) => {
       if (data.error) {
         alert(data.error);
       }
+
+      if (!data.links) {
+        return [];
+      }
+
+      return data.links;
     });
-};
 
 // Assumes that the route has no query params if passed the record id and type
 export const getSteps = async ({ route, recordId, recordType }) => {
@@ -28,11 +39,12 @@ export const getSteps = async ({ route, recordId, recordType }) => {
   return fetch(ourRoute)
     .then((res) => res.json())
     .then((data) => {
-      const { steps, selectedStepId = 0 } = data;
+      const { steps, selectedStepId = 0, links = null } = data;
 
       return {
         steps,
         selectedStepId,
+        links,
       };
     });
 };

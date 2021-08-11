@@ -2,7 +2,6 @@ import Injector from "lib/Injector";
 import WorkflowWidget from "../components/WorkflowWidget";
 import WorkflowButton from "../components/WorkflowButton";
 import WorkflowIcon from "../components/WorkflowIcon";
-import WorkflowStep from "../components/WorkflowStep";
 import ElementActions from "../components/ElementActions";
 
 export default () => {
@@ -10,7 +9,6 @@ export default () => {
     WorkflowWidget: WorkflowWidget,
     WorkflowButton: WorkflowButton,
     WorkflowIcon: WorkflowIcon,
-    WorkflowStep: WorkflowStep,
   });
 
   Injector.transform("workflow", (updater) => {

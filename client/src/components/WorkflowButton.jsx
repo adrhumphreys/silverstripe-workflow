@@ -9,6 +9,7 @@ import {
 import classNames from "classnames";
 import { inject } from "lib/Injector";
 import { sendSelectedStep } from "../helper";
+import WorkflowStep from "./WorkflowStep";
 
 const WorkflowButton = (props) => {
     const {
@@ -17,12 +18,17 @@ const WorkflowButton = (props) => {
         selectedStepId,
         steps,
         route,
+        links = null,
         WorkflowIcon,
-        WorkflowStep,
     } = props;
     const [selectedId, setSelectedId] = useState(selectedStepId);
     const [title, setTitle] = useState(null);
     const [icon, setIcon] = useState(null);
+    const [customLinks, setCustomLinks] = useState(links);
+
+    useEffect(() => {
+        setCustomLinks(links);
+    }, [links]);
 
     // This prop gets changed so we need to update it
     useEffect(() => {
@@ -49,6 +55,8 @@ const WorkflowButton = (props) => {
             stepId,
             recordId,
             recordType,
+        }).then((links) => {
+            links ? setCustomLinks(links) : null;
         });
     };
 
@@ -60,6 +68,20 @@ const WorkflowButton = (props) => {
                   onClick={createOnClick(s.id)}
                   selectedId={selectedId}
               />
+          ))
+        : null;
+
+    const renderedLinks = customLinks
+        ? customLinks.map(({ url, title, icon = null }) => (
+              <DropdownItem
+                  rel="noopener"
+                  target="_blank"
+                  className="workflow-widget__item workflow-widget__item--link"
+                  href={url}
+              >
+                  {icon ? <img src={icon} aria-hidden={true} /> : null}
+                  {title}
+              </DropdownItem>
           ))
         : null;
 
@@ -81,7 +103,15 @@ const WorkflowButton = (props) => {
                         </div>
                     )}
                 </DropdownToggle>
-                <DropdownMenu>{renderedSteps}</DropdownMenu>
+                <DropdownMenu>
+                    {renderedSteps}{" "}
+                    {renderedLinks ? (
+                        <Fragment>
+                            <DropdownItem divider />
+                            {renderedLinks}
+                        </Fragment>
+                    ) : null}
+                </DropdownMenu>
             </UncontrolledButtonDropdown>
         </div>
     );
@@ -89,4 +119,4 @@ const WorkflowButton = (props) => {
 
 export { WorkflowButton as Component };
 
-export default inject(["WorkflowIcon", "WorkflowStep"])(WorkflowButton);
+export default inject(["WorkflowIcon"])(WorkflowButton);

@@ -101,6 +101,7 @@ class WorkflowController extends Controller
         $data = [];
         $recordId = $request->getVar('id');
         $recordType = $request->getVar('type');
+        $relation = null;
 
         if ($recordId && $recordType) {
             $relation = $this->getRelationByTypeID($recordId, $recordType);
@@ -121,6 +122,8 @@ class WorkflowController extends Controller
         }
 
         $data['steps'] = $steps;
+
+        $this->extend('updateGetSteps', $data, $relation);
 
         return $this->createJsonResponse($data);
     }

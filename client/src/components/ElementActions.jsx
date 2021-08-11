@@ -5,6 +5,7 @@ import { inject } from "lib/Injector";
 const ElementActions = (props) => {
     const { ActionCompontent, WorkflowButton } = props;
     const [steps, setSteps] = useState([]);
+    const [links, setLinks] = useState(null);
     const [selectedStepId, setSelectedStepId] = useState(0);
 
     const recordId = props.element.id;
@@ -16,9 +17,10 @@ const ElementActions = (props) => {
             route: "cms/api/workflow/steps/",
             recordId,
             recordType,
-        }).then(({ steps, selectedStepId }) => {
+        }).then(({ steps, selectedStepId, links }) => {
             setSteps(steps);
             setSelectedStepId(selectedStepId);
+            setLinks(links);
         });
     }, []);
 
@@ -28,6 +30,7 @@ const ElementActions = (props) => {
         route: "cms/api/workflow",
         steps,
         selectedStepId,
+        links,
     };
 
     return (

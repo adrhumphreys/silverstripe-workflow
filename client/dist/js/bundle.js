@@ -114,10 +114,6 @@ var _WorkflowIcon = __webpack_require__("./client/src/components/WorkflowIcon.js
 
 var _WorkflowIcon2 = _interopRequireDefault(_WorkflowIcon);
 
-var _WorkflowStep = __webpack_require__("./client/src/components/WorkflowStep.jsx");
-
-var _WorkflowStep2 = _interopRequireDefault(_WorkflowStep);
-
 var _ElementActions = __webpack_require__("./client/src/components/ElementActions.jsx");
 
 var _ElementActions2 = _interopRequireDefault(_ElementActions);
@@ -128,8 +124,7 @@ exports.default = function () {
   _Injector2.default.component.registerMany({
     WorkflowWidget: _WorkflowWidget2.default,
     WorkflowButton: _WorkflowButton2.default,
-    WorkflowIcon: _WorkflowIcon2.default,
-    WorkflowStep: _WorkflowStep2.default
+    WorkflowIcon: _WorkflowIcon2.default
   });
 
   _Injector2.default.transform("workflow", function (updater) {
@@ -187,10 +182,15 @@ var ElementActions = function ElementActions(props) {
         steps = _useState2[0],
         setSteps = _useState2[1];
 
-    var _useState3 = (0, _react.useState)(0),
+    var _useState3 = (0, _react.useState)(null),
         _useState4 = _slicedToArray(_useState3, 2),
-        selectedStepId = _useState4[0],
-        setSelectedStepId = _useState4[1];
+        links = _useState4[0],
+        setLinks = _useState4[1];
+
+    var _useState5 = (0, _react.useState)(0),
+        _useState6 = _slicedToArray(_useState5, 2),
+        selectedStepId = _useState6[0],
+        setSelectedStepId = _useState6[1];
 
     var recordId = props.element.id;
     var recordType = "element";
@@ -202,10 +202,12 @@ var ElementActions = function ElementActions(props) {
             recordType: recordType
         }).then(function (_ref) {
             var steps = _ref.steps,
-                selectedStepId = _ref.selectedStepId;
+                selectedStepId = _ref.selectedStepId,
+                links = _ref.links;
 
             setSteps(steps);
             setSelectedStepId(selectedStepId);
+            setLinks(links);
         });
     }, []);
 
@@ -214,7 +216,8 @@ var ElementActions = function ElementActions(props) {
         recordType: recordType,
         route: "cms/api/workflow",
         steps: steps,
-        selectedStepId: selectedStepId
+        selectedStepId: selectedStepId,
+        links: links
     };
 
     return _react2.default.createElement(
@@ -263,6 +266,10 @@ var _Injector = __webpack_require__(4);
 
 var _helper = __webpack_require__("./client/src/helper.js");
 
+var _WorkflowStep = __webpack_require__("./client/src/components/WorkflowStep.jsx");
+
+var _WorkflowStep2 = _interopRequireDefault(_WorkflowStep);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var WorkflowButton = function WorkflowButton(props) {
@@ -271,8 +278,9 @@ var WorkflowButton = function WorkflowButton(props) {
         selectedStepId = props.selectedStepId,
         steps = props.steps,
         route = props.route,
-        WorkflowIcon = props.WorkflowIcon,
-        WorkflowStep = props.WorkflowStep;
+        _props$links = props.links,
+        links = _props$links === undefined ? null : _props$links,
+        WorkflowIcon = props.WorkflowIcon;
 
     var _useState = (0, _react.useState)(selectedStepId),
         _useState2 = _slicedToArray(_useState, 2),
@@ -288,6 +296,15 @@ var WorkflowButton = function WorkflowButton(props) {
         _useState6 = _slicedToArray(_useState5, 2),
         icon = _useState6[0],
         setIcon = _useState6[1];
+
+    var _useState7 = (0, _react.useState)(links),
+        _useState8 = _slicedToArray(_useState7, 2),
+        customLinks = _useState8[0],
+        setCustomLinks = _useState8[1];
+
+    (0, _react.useEffect)(function () {
+        setCustomLinks(links);
+    }, [links]);
 
     (0, _react.useEffect)(function () {
         setSelectedId(selectedStepId);
@@ -313,17 +330,37 @@ var WorkflowButton = function WorkflowButton(props) {
                 stepId: stepId,
                 recordId: recordId,
                 recordType: recordType
+            }).then(function (links) {
+                links ? setCustomLinks(links) : null;
             });
         };
     };
 
     var renderedSteps = steps ? steps.map(function (s) {
-        return _react2.default.createElement(WorkflowStep, _extends({
+        return _react2.default.createElement(_WorkflowStep2.default, _extends({
             key: s.id
         }, s, {
             onClick: createOnClick(s.id),
             selectedId: selectedId
         }));
+    }) : null;
+
+    var renderedLinks = customLinks ? customLinks.map(function (_ref) {
+        var url = _ref.url,
+            title = _ref.title,
+            _ref$icon = _ref.icon,
+            icon = _ref$icon === undefined ? null : _ref$icon;
+        return _react2.default.createElement(
+            _reactstrap.DropdownItem,
+            {
+                rel: "noopener",
+                target: "_blank",
+                className: "workflow-widget__item workflow-widget__item--link",
+                href: url
+            },
+            icon ? _react2.default.createElement("img", { src: icon, "aria-hidden": true }) : null,
+            title
+        );
     }) : null;
 
     return _react2.default.createElement(
@@ -349,14 +386,21 @@ var WorkflowButton = function WorkflowButton(props) {
             _react2.default.createElement(
                 _reactstrap.DropdownMenu,
                 null,
-                renderedSteps
+                renderedSteps,
+                " ",
+                renderedLinks ? _react2.default.createElement(
+                    _react.Fragment,
+                    null,
+                    _react2.default.createElement(_reactstrap.DropdownItem, { divider: true }),
+                    renderedLinks
+                ) : null
             )
         )
     );
 };
 
 exports.Component = WorkflowButton;
-exports.default = (0, _Injector.inject)(["WorkflowIcon", "WorkflowStep"])(WorkflowButton);
+exports.default = (0, _Injector.inject)(["WorkflowIcon"])(WorkflowButton);
 
 /***/ }),
 
@@ -482,7 +526,6 @@ var WorkflowStep = function WorkflowStep(_ref) {
                 "workflow-widget__item--active": selectedId === id
             }),
             onClick: onClick,
-            toggle: false,
             disabled: selectedId === id
         },
         _react2.default.createElement("img", { src: icon, "aria-hidden": "true" }),
@@ -546,9 +589,9 @@ var sendSelectedStep = exports.sendSelectedStep = function sendSelectedStep(_ref
   var route = _ref.route,
       stepId = _ref.stepId,
       recordId = _ref.recordId,
-      recordType = _ref.recordType;
-
-  fetch(route, {
+      recordType = _ref.recordType,
+      setLinks = _ref.setLinks;
+  return fetch(route, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -564,6 +607,12 @@ var sendSelectedStep = exports.sendSelectedStep = function sendSelectedStep(_ref
     if (data.error) {
       alert(data.error);
     }
+
+    if (!data.links) {
+      return [];
+    }
+
+    return data.links;
   });
 };
 
@@ -583,12 +632,15 @@ var getSteps = exports.getSteps = function () {
             }).then(function (data) {
               var steps = data.steps,
                   _data$selectedStepId = data.selectedStepId,
-                  selectedStepId = _data$selectedStepId === undefined ? 0 : _data$selectedStepId;
+                  selectedStepId = _data$selectedStepId === undefined ? 0 : _data$selectedStepId,
+                  _data$links = data.links,
+                  links = _data$links === undefined ? null : _data$links;
 
 
               return {
                 steps: steps,
-                selectedStepId: selectedStepId
+                selectedStepId: selectedStepId,
+                links: links
               };
             }));
 
