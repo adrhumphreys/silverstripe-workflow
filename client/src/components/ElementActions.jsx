@@ -3,7 +3,7 @@ import { getSteps } from "../helper";
 import { inject } from "lib/Injector";
 
 const ElementActions = (props) => {
-    const { ActionCompontent, WorkflowButton } = props;
+    const { WorkflowButton } = props;
     const [steps, setSteps] = useState([]);
     const [links, setLinks] = useState(null);
     const [selectedStepId, setSelectedStepId] = useState(0);
@@ -36,7 +36,6 @@ const ElementActions = (props) => {
     return (
         <div className="workflow-element-actions">
             <WorkflowButton {...buttonProps} />
-            <ActionCompontent {...props} />
         </div>
     );
 };
