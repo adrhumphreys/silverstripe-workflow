@@ -110,10 +110,6 @@ var _WorkflowButton = __webpack_require__("./client/src/components/WorkflowButto
 
 var _WorkflowButton2 = _interopRequireDefault(_WorkflowButton);
 
-var _WorkflowIcon = __webpack_require__("./client/src/components/WorkflowIcon.jsx");
-
-var _WorkflowIcon2 = _interopRequireDefault(_WorkflowIcon);
-
 var _ElementActions = __webpack_require__("./client/src/components/ElementActions.jsx");
 
 var _ElementActions2 = _interopRequireDefault(_ElementActions);
@@ -123,8 +119,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = function () {
   _Injector2.default.component.registerMany({
     WorkflowWidget: _WorkflowWidget2.default,
-    WorkflowButton: _WorkflowButton2.default,
-    WorkflowIcon: _WorkflowIcon2.default
+    WorkflowButton: _WorkflowButton2.default
   });
 
   _Injector2.default.transform("workflow", function (updater) {
@@ -403,13 +398,6 @@ var WorkflowButton = function WorkflowButton(props) {
 
 exports.Component = WorkflowButton;
 exports.default = (0, _Injector.inject)()(WorkflowButton);
-
-/***/ }),
-
-/***/ "./client/src/components/WorkflowIcon.jsx":
-/***/ (function(module, exports) {
-
-throw new Error("Module build failed: Error: ENOENT: no such file or directory, open '/Users/adrianhumphreys/Sites/cache-key/vendor/silverstripe/workflow/client/src/components/WorkflowIcon.jsx'");
 
 /***/ }),
 
