@@ -187,7 +187,7 @@ var ElementActions = function ElementActions(props) {
         links = _useState4[0],
         setLinks = _useState4[1];
 
-    var _useState5 = (0, _react.useState)(0),
+    var _useState5 = (0, _react.useState)(null),
         _useState6 = _slicedToArray(_useState5, 2),
         selectedStepId = _useState6[0],
         setSelectedStepId = _useState6[1];
@@ -279,8 +279,7 @@ var WorkflowButton = function WorkflowButton(props) {
         steps = props.steps,
         route = props.route,
         _props$links = props.links,
-        links = _props$links === undefined ? null : _props$links,
-        WorkflowIcon = props.WorkflowIcon;
+        links = _props$links === undefined ? null : _props$links;
 
     var _useState = (0, _react.useState)(selectedStepId),
         _useState2 = _slicedToArray(_useState, 2),
@@ -403,93 +402,14 @@ var WorkflowButton = function WorkflowButton(props) {
 };
 
 exports.Component = WorkflowButton;
-exports.default = (0, _Injector.inject)(["WorkflowIcon"])(WorkflowButton);
+exports.default = (0, _Injector.inject)()(WorkflowButton);
 
 /***/ }),
 
 /***/ "./client/src/components/WorkflowIcon.jsx":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _Injector = __webpack_require__(4);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var WorkflowIcon = function WorkflowIcon() {
-    return _react2.default.createElement(
-        "svg",
-        {
-            width: "22",
-            height: "22",
-            viewBox: "0 0 22 22",
-            xmlns: "http://www.w3.org/2000/svg"
-        },
-        _react2.default.createElement(
-            "defs",
-            null,
-            _react2.default.createElement("circle", { id: "a", cx: "11", cy: "11", r: "11" }),
-            _react2.default.createElement("path", { id: "c", d: "M0 0h11v22H0z" }),
-            _react2.default.createElement(
-                "mask",
-                {
-                    id: "b",
-                    maskContentUnits: "userSpaceOnUse",
-                    maskUnits: "objectBoundingBox",
-                    x: "0",
-                    y: "0",
-                    width: "22",
-                    height: "22",
-                    fill: "#fff"
-                },
-                _react2.default.createElement("use", { xlinkHref: "#a" })
-            )
-        ),
-        _react2.default.createElement(
-            "g",
-            { fill: "none", "fill-rule": "evenodd" },
-            _react2.default.createElement("use", {
-                stroke: "#6F84A7",
-                mask: "url(#b)",
-                "stroke-width": "4",
-                "stroke-dasharray": "3,3",
-                xlinkHref: "#a"
-            }),
-            _react2.default.createElement(
-                "g",
-                { transform: "translate(11)" },
-                _react2.default.createElement(
-                    "mask",
-                    { id: "d", fill: "#fff" },
-                    _react2.default.createElement("use", { xlinkHref: "#c" })
-                ),
-                _react2.default.createElement("circle", {
-                    stroke: "#6F84A7",
-                    "stroke-width": "2",
-                    mask: "url(#d)",
-                    cy: "11",
-                    r: "10"
-                })
-            ),
-            _react2.default.createElement(
-                "g",
-                { fill: "#6F84A7", "fill-rule": "nonzero" },
-                _react2.default.createElement("path", { d: "M7.333 9.07H4l1.208 2.43L4 13.93h3.333l1.209-2.43zM12.333 9.07H9l1.194 2.43L9 13.93h3.333l1.195-2.43zM17.57 9.07h-3.334l1.208 2.43-1.208 2.43h3.333l1.209-2.43z" })
-            )
-        )
-    );
-};
-
-exports.default = WorkflowIcon;
+throw new Error("Module build failed: Error: ENOENT: no such file or directory, open '/Users/adrianhumphreys/Sites/cache-key/vendor/silverstripe/workflow/client/src/components/WorkflowIcon.jsx'");
 
 /***/ }),
 

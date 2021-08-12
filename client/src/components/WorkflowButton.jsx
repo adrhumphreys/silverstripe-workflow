@@ -19,7 +19,6 @@ const WorkflowButton = (props) => {
         steps,
         route,
         links = null,
-        WorkflowIcon,
     } = props;
     const [selectedId, setSelectedId] = useState(selectedStepId);
     const [title, setTitle] = useState(null);
@@ -119,4 +118,4 @@ const WorkflowButton = (props) => {
 
 export { WorkflowButton as Component };
 
-export default inject(["WorkflowIcon"])(WorkflowButton);
+export default inject()(WorkflowButton);

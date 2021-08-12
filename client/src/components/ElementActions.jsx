@@ -6,7 +6,7 @@ const ElementActions = (props) => {
     const { ActionCompontent, WorkflowButton } = props;
     const [steps, setSteps] = useState([]);
     const [links, setLinks] = useState(null);
-    const [selectedStepId, setSelectedStepId] = useState(0);
+    const [selectedStepId, setSelectedStepId] = useState(null);
 
     const recordId = props.element.id;
     const recordType = "element";
