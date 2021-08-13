@@ -6,7 +6,9 @@ use BucklesHusky\FontAwesomeIconPicker\Forms\FAPickerField;
 use DNADesign\Elemental\Models\BaseElement;
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Colorpicker\Forms\ColorPickerField;
+use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\FieldList;
+use SilverStripe\IconPicker\IconPickerField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\HasManyList;
 use SilverStripe\SiteConfig\SiteConfig;
@@ -31,6 +33,7 @@ class Step extends DataObject
 
     private static array $db = [
         'Title' => 'Varchar(255)',
+        'Icon' => 'Varchar(255)',
         'FAIcon' => 'Varchar(255)',
         'Color' => 'Varchar(255)',
         'Sort' => 'Int',
@@ -55,6 +58,22 @@ class Step extends DataObject
         $fields->addFieldToTab(
             'Root.Main',
             FAPickerField::create('FAIcon', 'Icon')
+        );
+
+        $fields->addFieldToTab(
+            'Root.Main',
+            DropdownField::create('Iconaaaaa', 'Icon', [
+                'print' => 'Print',
+                'info-circled' => 'Info Circled',
+            ])
+        );
+
+        $fields->addFieldToTab(
+            'Root.Main',
+            IconPickerField::create('Icon', 'Icon', [
+                'print' => 'Print',
+                'info-circled' => 'Info Circled',
+            ])->setEmptyString('No icon')
         );
 
         $fields->addFieldsToTab(
