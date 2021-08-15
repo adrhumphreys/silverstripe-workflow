@@ -62,17 +62,10 @@ class Step extends DataObject
 
         $fields->addFieldToTab(
             'Root.Main',
-            DropdownField::create('Iconaaaaa', 'Icon', [
-                'print' => 'Print',
-                'info-circled' => 'Info Circled',
-            ])
-        );
-
-        $fields->addFieldToTab(
-            'Root.Main',
             IconPickerField::create('Icon', 'Icon', [
-                'print' => 'Print',
-                'info-circled' => 'Info Circled',
+                'font-icon-print' => 'Print',
+                'font-icon-plus' => 'Plus',
+                'font-icon-info-circled' => 'Info Circled',
             ])->setEmptyString('No icon')
         );
 
