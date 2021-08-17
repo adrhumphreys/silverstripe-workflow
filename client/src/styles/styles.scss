@@ -29,19 +29,29 @@ $dark-grey: #566b8d;
   }
 }
 
+
+
 .workflow-widget__item__icon {
   font-size: 22px;
 
   &.workflow-widget__item__icon--red {
-    color: red;
+    color: $brand-danger;
   }
 
   &.workflow-widget__item__icon--blue {
-    color: blue;
+    color: $brand-secondary;
+  }
+
+  &.workflow-widget__item__icon---light-blue {
+    color: $brand-primary;
   }
 
   &.workflow-widget__item__icon--green {
-    color: green;
+    color: $brand-success;
+  }
+
+  &.workflow-widget__item__icon--orange {
+    color: $state-draft-bg;
   }
 }
 

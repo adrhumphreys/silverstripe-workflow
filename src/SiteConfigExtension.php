@@ -7,6 +7,7 @@ use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\TextField;
+use SilverStripe\IconPicker\IconPickerField;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\HasManyList;
 use SilverStripe\SiteConfig\SiteConfig;
@@ -16,14 +17,14 @@ use SilverStripe\SiteConfig\SiteConfig;
  *
  * @property SiteConfig|$this owner
  * @property string WorkflowNoStepTitle
- * @property string WorkflowNoStepFAIcon
+ * @property string WorkflowNoStepIcon
  * @method Step[]|HasManyList Steps
  */
 class SiteConfigExtension extends DataExtension
 {
     private static array $db = [
         'WorkflowNoStepTitle' => 'Varchar(255)',
-        'WorkflowNoStepFAIcon' => 'Varchar(255)',
+        'WorkflowNoStepIcon' => 'Varchar(255)',
     ];
 
     private static array $has_many = [
@@ -35,7 +36,11 @@ class SiteConfigExtension extends DataExtension
         $fields->addFieldsToTab('Root.Workflow', [
             TextField::create('WorkflowNoStepTitle', 'Unselected step title')
                 ->setDescription('E.g. "Nothing set"'),
-            FAPickerField::create('WorkflowNoStepFAIcon', 'Unselected step icon')
+            IconPickerField::create(
+                'Icon',
+                'Icon',
+                Step::config()->get('icons')
+            ),
         ]);
 
         $field = GridField::create(

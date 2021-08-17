@@ -117,7 +117,7 @@ class WorkflowController extends Controller
             $steps[] = [
                 'id' => $step->ID,
                 'title' => $step->Title,
-                'faIcon' => $step->FAIcon . ' ' . $step->Color,
+                'faIcon' => $step->Icon . ' ' . $step->Color,
             ];
         }
 

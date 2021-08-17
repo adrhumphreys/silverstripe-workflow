@@ -55,7 +55,7 @@ class WorkflowWidget extends FormField
             $steps[] = [
                 'id' => $step->ID,
                 'title' => $step->Title,
-                'faIcon' => $step->FAIcon . ' ' . $step->Color,
+                'faIcon' => $step->Icon . ' ' . $step->Color,
             ];
         }
 
@@ -112,7 +112,7 @@ class WorkflowWidget extends FormField
             'id' => 0,
             'title' => $config->WorkflowNoStepTitle ?? 'No step selected',
             'icon' => $iconResource->getURL(),
-            'faIcon' => $config->WorkflowNoStepFAIcon ?? 'fas fa-question-circle',
+            'faIcon' => $config->WorkflowNoStepIcon ?? Step::DEFAULT_ICON,
         ];
     }
 }

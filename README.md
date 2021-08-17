@@ -11,8 +11,26 @@ Manage your content by using a dropdown on your elements and pages to set the st
 composer require silverstripe/workflow
 ```
 
-## Add custom icons to steps
-In `Step::getIconPath` we will try to find the icon in the workflow `client/assets` directory and if we can't find it then we will return the value of `Icon` this means you can add additional icons to the dropdown field with a full path and they will work out of the box
+## Add custom icons/colors to steps
+These are configurable properties in the `Step` you can do something like:
+
+```yaml
+SilverStripe\Workflow\Step:
+    colors:
+        -
+            Title: 'Red'
+            CSSClass: 'custom-css-class'
+            Color: '#d40404'
+```
+
+Likewise for icons:
+```yaml
+SilverStripe\Workflow\Step:
+    icons:
+        -
+            Title: 'My icon'
+            CSSClass: 'custom-css-class'
+```
 
 ## Integrate with a third party:
 We've tried to make it so you can just add some extension points and methods to allow you to integrate with a third party service easily. If you run into bariers, please reach out. We'd love to help.
